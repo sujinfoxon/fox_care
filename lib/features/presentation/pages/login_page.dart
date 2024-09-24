@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
-import '../../../core/theme/colors.dart';
+import 'package:foxcare_app/core/theme/colors.dart';
+import 'package:foxcare_app/features/presentation/pages/reception_dashboard.dart';
 import '../widgets/custom_elements.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -26,11 +26,8 @@ class LoginScreen extends StatelessWidget {
                 ),
                 // Right side: Logo
                 Expanded(
-
-
                   child: Center(
-
-                    child: Logo(),
+                    child: Custom_Logo(path: AppImages.logo,),
                   ),
                 ),
               ],
@@ -44,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                 // Top half: Login form
                 Expanded(
                   child: Center(
-                    child: Logo(),
+                    child: Custom_Logo(path: AppImages.logo,),
                   ),
                 ),
                 // Bottom half: Logo
@@ -70,59 +67,41 @@ class LoginForm extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Welcome back!',style: TextStyle(fontSize: 25.0),),
-        Text('Enter your Credentials to access your account',style: TextStyle(fontWeight: FontWeight.bold),),
-        SizedBox(height: 20,),
-        Text('Email',style: TextStyle(fontWeight: FontWeight.bold),),
-        TextField(
-          decoration: InputDecoration(
-            hintText: 'Enter your email',
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.0),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue, width: 2.0),
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1),
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-          ),
+        Text(
+          'Welcome back!',
+          style: TextStyle(fontSize: 25.0),
+        ),
+        Text(
+          'Enter your Credentials to access your account',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          'Email',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        CustomTextField(
+          hintText: 'Enter your email',
         ),
         SizedBox(height: 10),
-        Text('Password',style: TextStyle(fontWeight: FontWeight.bold),),
-        TextField(
-          obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Enter your password',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0)
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue, width: 2.0),
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1),
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-          ),
+        Text(
+          'Password',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        CustomTextField(hintText: 'Enter Password', obscureText: true),
         SizedBox(height: 30),
-        CustomButton(label: "login",onPressed: () {},)
+        CustomButton(
+          label: "login",
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => ReceptionDashboard(),
+              ),
+            );
+          },
+        )
       ],
-    );
-  }
-}
-
-class Logo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      AppImages.logo,  // Replace with your image path
-      width: 200,
-      height: 200,
     );
   }
 }
