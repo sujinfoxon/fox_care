@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'features/presentation/pages/home_page.dart'; // Replace with your home page
+import 'package:foxcare_app/core/theme/colors.dart';
+import 'features/presentation/pages/login_page.dart'; // Replace with your home page
 
 void main() {
   runApp(MyApp());
@@ -28,10 +29,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 10), () {
+    Timer(Duration(seconds: 2), () {
       // Navigate to the home page after 3 seconds
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => LoginScreen()),
       );
     });
   }
@@ -53,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               width: screenWidth * 0.6, // 60% of screen width
               height: screenHeight * 0.3, // 30% of screen height
-              child: Image.asset('assets/splash.png'), // Add your splash image here
+              child: Image.asset(AppImages.logo), // Add your splash image here
             ),
             SizedBox(height: screenHeight * 0.05), // 5% spacing
             // Responsive text that scales with screen size
@@ -62,13 +63,13 @@ class _SplashScreenState extends State<SplashScreen> {
               style: TextStyle(
                 fontSize: screenWidth * 0.06, // Font size is 8% of screen width
                 fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
+                color: AppColors.primary,
               ),
             ),
             Column(
               children: [
-                Text('A Product By',style: TextStyle(color: Colors.blue,fontSize: screenWidth * 0.03),),
-                Text('Foxton',style: TextStyle(color: Colors.blue,fontSize: screenWidth * 0.03),),
+                Text('A Product By',style: TextStyle(color: AppColors.secondary,fontSize: screenWidth * 0.03),),
+                Text('Foxton',style: TextStyle(color: AppColors.secondary,fontSize: screenWidth * 0.03),),
               ],
             ),
           ],
