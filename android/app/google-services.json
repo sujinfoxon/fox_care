@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "286595756668",
+    "project_id": "foxcare-31d8d",
+    "storage_bucket": "foxcare-31d8d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286595756668:android:ad3b133e28bd038cf78ff9",
+        "android_client_info": {
+          "package_name": "com.foxcare.foxcare_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7e04KYpN8bFHdbXMbKCKcdh5g3oepZzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

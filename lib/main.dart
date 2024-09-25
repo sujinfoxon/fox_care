@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foxcare_app/core/theme/colors.dart';
-import 'features/presentation/pages/login_page.dart'; // Replace with your home page
+import 'features/presentation/pages/login_page.dart';
+import 'firebase_options.dart'; // Replace with your home page
 
-void main() {
+void main() async{
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
