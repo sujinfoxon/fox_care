@@ -1,6 +1,8 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+
+import '../widgets/custom_elements.dart';
+import 'op_ticket.dart';
 
 class PatientRegistration extends StatefulWidget {
   @override
@@ -8,44 +10,54 @@ class PatientRegistration extends StatefulWidget {
 }
 
 class _PatientRegistrationState extends State<PatientRegistration> {
+  int selectedIndex = 0;
+  String selectedSex = 'Male'; // Default value for Sex
+  String selectedBloodGroup = 'A+'; // Default value for Blood Group
+
   @override
   Widget build(BuildContext context) {
-    // Get the screen width using MediaQuery
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobile = screenWidth < 600;
 
     return Scaffold(
       appBar: isMobile
           ? AppBar(
-        title: Text('Reception Dashboard'),
-      )
-          : null, // No AppBar for web view
+              title: Text('Reception Dashboard'),
+            )
+          : null,
       drawer: isMobile
           ? Drawer(
-        child: buildDrawerContent(), // Drawer minimized for mobile
-      )
-          : null, // No drawer for web view (permanently open)
+              child: buildDrawerContent(), // Drawer minimized for mobile
+            )
+          : null, // No AppBar for web view
       body: Row(
         children: [
           if (!isMobile)
             Container(
-              width: 250, // Fixed width for the sidebar
+              width: 300, // Sidebar width for larger screens
               color: Colors.blue.shade100,
-              child: buildDrawerContent(), // Sidebar always open for web view
+              child: buildDrawerContent(), // Sidebar content
             ),
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: buildForm(),
+              padding: EdgeInsets.all(28.0),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth > 600) {
+                    return buildThreeColumnForm(); // Web view
+                  } else {
+                    return buildSingleColumnForm(); // Mobile view
+                  }
+                },
+              ),
             ),
           ),
         ],
       ),
-
     );
   }
 
-  // Drawer content reused for both web and mobile
+  // Sidebar content for desktop view
   Widget buildDrawerContent() {
     return ListView(
       padding: EdgeInsets.zero,
@@ -62,185 +74,292 @@ class _PatientRegistrationState extends State<PatientRegistration> {
             ),
           ),
         ),
-        ListTile(
-          title: Text('Patient Registration'),
-          onTap: () {
+        buildDrawerItem(0, 'Patient Registration', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => PatientRegistration()),
+          );
+        },Iconsax.mask),
+        Divider(height: 5,color:Colors.grey,),
+        buildDrawerItem(1, 'OP Ticket', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => OpTicketPage()),
+          );
+        },Iconsax.receipt),
+        Divider(height: 5,color:Colors.grey,),
+        buildDrawerItem(2, 'IP Admission', () {},Iconsax.add_circle),
+        Divider(height: 5,color:Colors.grey,),
+        buildDrawerItem(3, 'OP Counters', () {},Iconsax.square),
+        Divider(height: 5,color:Colors.grey,),
+        buildDrawerItem(4, 'Admission Statement', () {},Iconsax.status),
+        Divider(height: 5,color:Colors.grey,),
+        buildDrawerItem(5, 'Doctor Visit Schedule', () {},Iconsax.hospital),
 
-          },
-        ),
-        ListTile(
-          title: Text('OP Ticket'),
-          onTap: () {
+        Divider(height: 5,color:Colors.grey,),
+        buildDrawerItem(7, 'Logout', () {
+          // Handle logout action
+        },Iconsax.logout),
+      ],
+    );
+  }
 
-          },
+  Widget buildDrawerItem(int index, String title, VoidCallback onTap,IconData icon) {
+    return ListTile(
+      selected: selectedIndex == index,
+      selectedTileColor: Colors.blueAccent.shade100, // Highlight color for the selected item
+      leading: Icon(
+        icon, // Replace with actual icons
+        color: selectedIndex == index ? Colors.blue : Colors.white,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+            color: selectedIndex == index ? Colors.blue : Colors.black54,fontWeight: FontWeight.w700
         ),
-        ListTile(
-          title: Text('IP Admission'),
-          onTap: () {
+      ),
+      onTap: () {
+        setState(() {
+          selectedIndex = index; // Update the selected index
+        });
+        onTap();
+      },
+    );
+  }
 
-          },
+  // Form layout for web with three columns
+  Widget buildThreeColumnForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Patient Information :',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                Text('OP Number : ',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                SizedBox(
+                    width: 200.0,
+                    child: CustomTextField(
+                      hintText: 'Enter OP Number',
+                    )),
+              ],
+            ),
+          ],
         ),
-        ListTile(
-          title: Text('OP Counters'),
-          onTap: () {},
+        SizedBox(height: 60),
+        Row(
+          children: [
+            Expanded(
+                child: CustomTextField(
+              hintText: 'First Name',
+            )),
+            SizedBox(width: 20),
+            Expanded(
+                child: CustomTextField(
+              hintText: 'Middle Name',
+            )),
+            SizedBox(width: 20),
+            Expanded(
+                child: CustomTextField(
+              hintText: 'Last Name',
+            )),
+          ],
         ),
-        ListTile(
-          title: Text('Admission Statement'),
-          onTap: () {},
+        SizedBox(height: 40),
+        Row(
+          children: [
+            SizedBox(
+              width: 40,
+              child: Text('SEX :'),
+            ),
+            Expanded(
+              child: customDropdown(
+                'Sex',
+                ['Male', 'Female', 'Other'],
+                selectedSex,
+                (value) {
+                  setState(() {
+                    selectedSex = value!;
+                  });
+                },
+              ),
+            ),
+            SizedBox(width: 20),
+            SizedBox(
+              width: 40,
+              child: Text('AGE :'),
+            ),
+            Expanded(
+                child: CustomTextField(hintText: '',),),
+            SizedBox(width: 20),
+            SizedBox(
+              width: 40,
+              child: Text('DOB :'),
+            ),
+            Expanded(
+                child: CustomTextField(hintText: '(YYYY-MM-DD)',)
+            ),
+          ],
         ),
-        ListTile(
-          title: Text('Doctor Visit Schedule'),
-          onTap: () {},
+        SizedBox(height: 40),
+        CustomTextField(hintText: 'Address Line 1'),
+        SizedBox(height: 30),
+        CustomTextField(hintText: 'Address Line 2'),
+        SizedBox(height: 40),
+        Row(
+          children: [
+            Expanded(child: CustomTextField(hintText: "Land Mark",)),
+            SizedBox(width: 20),
+            Expanded(child: CustomTextField(hintText: "City",)),
+            SizedBox(width: 20),
+            Expanded(child: CustomTextField(hintText: "State",)),
+          ],
         ),
-        ListTile(
-          title: Text('OP Ticket'),
-          onTap: () {},
+        SizedBox(height: 20),
+        Row(
+          children: [
+            Expanded(
+                child:
+                    CustomTextField(hintText: 'Pincode',)),
+            SizedBox(width: 20),
+            Expanded(
+                child:
+                CustomTextField(hintText: 'Phone Number 1',)),
+            SizedBox(width: 20),
+            Expanded(
+                child:
+                CustomTextField(hintText: 'Phone Number 2',)),
+          ],
         ),
-        ListTile(
-          title: Text('Logout'),
-          onTap: () {
-            // Handle logout action
-          },
+        SizedBox(height: 40),
+
+        Row(
+          children: [
+            SizedBox(
+              width: 120,
+              child: Text('BLOOD GROUP :'),
+            ),
+            customDropdown(
+                'Blood Group',
+                ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+                selectedBloodGroup, (value) {
+              setState(() {
+                selectedBloodGroup = value!;
+              });
+            }),
+          ],
+        ),
+
+
+        SizedBox(height: 20),
+        Center(
+          child: SizedBox(
+            width: 400,
+            child: CustomButton(label: 'Register', onPressed: () {},)
+          ),
         ),
       ],
     );
   }
 
-  // The form displayed in the body
-  Widget buildForm() {
-    return Form(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Admission Form', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          SizedBox(height: 20),
+  // Form layout for mobile with one column
+  Widget buildSingleColumnForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
 
-          // OP Number
-          TextField(
-            decoration: InputDecoration(labelText: 'OP Number'),
-          ),
-          SizedBox(height: 16),
-
-          // First Name
-          TextField(
-            decoration: InputDecoration(labelText: 'First Name'),
-          ),
-          SizedBox(height: 16),
-
-          // Middle Name
-          TextField(
-            decoration: InputDecoration(labelText: 'Middle Name'),
-          ),
-          SizedBox(height: 16),
-
-          // Cast Name
-          TextField(
-            decoration: InputDecoration(labelText: 'Last Name'),
-          ),
-          SizedBox(height: 16),
-
-          // Sex
-          DropdownButtonFormField<String>(
-            decoration: InputDecoration(labelText: 'Sex'),
-            items: ['Male', 'Female', 'Other'].map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (value) {},
-          ),
-          SizedBox(height: 16),
-
-          // Age
-          TextField(
-            decoration: InputDecoration(labelText: 'Age'),
-            keyboardType: TextInputType.number,
-          ),
-          SizedBox(height: 16),
-
-          // DOB
-          TextField(
-            decoration: InputDecoration(labelText: 'DOB (YYYY-MM-DD)'),
-          ),
-          SizedBox(height: 16),
-
-          // Address Line 1
-          TextField(
-            decoration: InputDecoration(labelText: 'Address Line 1'),
-          ),
-          SizedBox(height: 16),
-
-          // Address Line 2
-          TextField(
-            decoration: InputDecoration(labelText: 'Address Line 2'),
-          ),
-          SizedBox(height: 16),
-
-          // Land Mark
-          TextField(
-            decoration: InputDecoration(labelText: 'Land Mark'),
-          ),
-          SizedBox(height: 16),
-
-          // City
-          TextField(
-            decoration: InputDecoration(labelText: 'City'),
-          ),
-          SizedBox(height: 16),
-
-          // State
-          TextField(
-            decoration: InputDecoration(labelText: 'State'),
-          ),
-          SizedBox(height: 16),
-
-          // Pincode
-          TextField(
-            decoration: InputDecoration(labelText: 'Pincode'),
-            keyboardType: TextInputType.number,
-          ),
-          SizedBox(height: 16),
-
-          // Mobile 1
-          TextField(
-            decoration: InputDecoration(labelText: 'Mobile 1'),
-            keyboardType: TextInputType.phone,
-          ),
-          SizedBox(height: 16),
-
-          // Mobile 2
-          TextField(
-            decoration: InputDecoration(labelText: 'Mobile 2'),
-            keyboardType: TextInputType.phone,
-          ),
-          SizedBox(height: 16),
-
-          // Blood Group
-          DropdownButtonFormField<String>(
-            decoration: InputDecoration(labelText: 'Blood Group'),
-            items: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (value) {},
-          ),
-          SizedBox(height: 20),
-
-          // Submit Button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                // Handle submit action
-              },
-              child: Text('Submit'),
+            Row(
+              children: [
+                Text('OP Number ',
+                    style:
+                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                SizedBox(
+                    width: 200.0,
+                    child: CustomTextField(
+                      hintText: 'Enter OP Number',
+                    )),
+              ],
             ),
+          ],
+        ),
+        SizedBox(height: 20),
+        custombuildTextField('First Name'),
+        SizedBox(height: 16),
+        custombuildTextField('Middle Name'),
+        SizedBox(height: 16),
+        custombuildTextField('Last Name'),
+        SizedBox(height: 16),
+        customDropdown('Sex', ['Male', 'Female', 'Other'], selectedSex,
+            (value) {
+          setState(() {
+            selectedSex = value!;
+          });
+        }),
+        SizedBox(height: 16),
+        custombuildTextField('Age', inputType: TextInputType.number),
+        SizedBox(height: 16),
+        custombuildTextField('DOB (YYYY-MM-DD)', inputType: TextInputType.datetime),
+        SizedBox(height: 16),
+        custombuildTextField('Address Line 1'),
+        SizedBox(height: 16),
+        custombuildTextField('Address Line 2'),
+        SizedBox(height: 16),
+        custombuildTextField('Land Mark'),
+        SizedBox(height: 16),
+        custombuildTextField('City'),
+        SizedBox(height: 16),
+        custombuildTextField('State'),
+        SizedBox(height: 16),
+        custombuildTextField('Pincode', inputType: TextInputType.number),
+        SizedBox(height: 16),
+        custombuildTextField('Mobile 1', inputType: TextInputType.phone),
+        SizedBox(height: 16),
+        custombuildTextField('Mobile 2', inputType: TextInputType.phone),
+        SizedBox(height: 16),
+        customDropdown(
+            'Blood Group',
+            ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+            selectedBloodGroup, (value) {
+          setState(() {
+            selectedBloodGroup = value!;
+          });
+        }),
+        SizedBox(height: 20),
+        Center(
+          child: SizedBox(
+              width: 250,
+              child: CustomButton(label: 'Register', onPressed: () {},)
           ),
-        ],
+        ),
+      ],
+    );
+  }
+
+
+
+  // Helper widget to create Dropdowns
+  Widget buildDrop(String label, List<String> items, String selectedItem,
+      ValueChanged<String?> onChanged) {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
       ),
+      value: selectedItem,
+      items: items.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: onChanged,
     );
   }
 }

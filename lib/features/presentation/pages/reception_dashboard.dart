@@ -4,6 +4,7 @@ import 'package:foxcare_app/features/presentation/pages/patient_registration.dar
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import '../widgets/custom_elements.dart';
+import 'op_ticket.dart';
 
 class ReceptionDashboard extends StatefulWidget {
   @override
@@ -35,7 +36,7 @@ class _ReceptionDashboardState extends State<ReceptionDashboard> {
         children: [
           if (!isMobile)
             Container(
-              width: 250, // Fixed width for the sidebar
+              width: 300, // Fixed width for the sidebar
               color: Colors.blue.shade100,
               child: buildDrawerContent(), // Sidebar always open for web view
             ),
@@ -71,7 +72,11 @@ class _ReceptionDashboardState extends State<ReceptionDashboard> {
           );
         },Iconsax.mask),
         Divider(height: 5,color:Colors.grey,),
-        buildDrawerItem(1, 'OP Ticket', () {},Iconsax.receipt),
+        buildDrawerItem(1, 'OP Ticket', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => OpTicketPage()),
+          );
+        },Iconsax.receipt),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(2, 'IP Admission', () {},Iconsax.add_circle),
         Divider(height: 5,color:Colors.grey,),
@@ -80,8 +85,7 @@ class _ReceptionDashboardState extends State<ReceptionDashboard> {
         buildDrawerItem(4, 'Admission Statement', () {},Iconsax.status),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(5, 'Doctor Visit Schedule', () {},Iconsax.hospital),
-        Divider(height: 5,color:Colors.grey,),
-        buildDrawerItem(6, 'OP Ticket', () {},Iconsax.ticket),
+
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(7, 'Logout', () {
           // Handle logout action
