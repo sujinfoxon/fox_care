@@ -1,27 +1,52 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foxcare_app/bloc/auth/auth_bloc.dart';
+import 'package:foxcare_app/repository/auth_repository.dart';
 import 'package:foxcare_app/core/theme/colors.dart';
-import 'features/presentation/pages/login_page.dart';
-import 'firebase_options.dart'; // Replace with your home page
+import 'package:foxcare_app/features/presentation/pages/doctors_dashboard.dart';
+import 'package:foxcare_app/features/presentation/pages/reception_dashboard.dart';
+import 'package:foxcare_app/features/presentation/pages/login_page.dart';
+import 'firebase_options.dart'; // Import firebase config options
 
-void main() async{
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+
+  final AuthRepository authRepository = AuthRepository();  // Initialize your AuthRepository
+
+  runApp(MyApp(authRepository: authRepository));  // Pass the repository to the app
 }
 
 class MyApp extends StatelessWidget {
+  final AuthRepository authRepository;
+
+  MyApp({Key? key, required this.authRepository}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Splash Screen',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(authRepository),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'FoxCare App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        routes: {
+          '/doctorHome': (context) => DoctorsDashboard(),
+          '/receptionHome': (context) => ReceptionDashboard(),
+        },
+        initialRoute: '/',  // Define the initial route
+        home: SplashScreen(),  // Starting screen is the splash screen
       ),
-      home: SplashScreen(),
     );
   }
 }
@@ -36,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 2), () {
-      // Navigate to the home page after 3 seconds
+      // Navigate to the login page after 2 seconds
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => LoginScreen()),
       );
@@ -45,37 +70,49 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Get the screen size and scale dynamically using MediaQuery
+    // Responsive design using MediaQuery
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    // Use these values to create a responsive splash screen
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Adjust the image size based on screen width and height
+            // Splash logo image with responsive size
             Container(
-              width: screenWidth * 0.6, // 60% of screen width
-              height: screenHeight * 0.3, // 30% of screen height
-              child: Image.asset(AppImages.logo), // Add your splash image here
+              width: screenWidth * 0.6,
+              height: screenHeight * 0.3,
+              child: Image.asset(AppImages.logo), // Your splash logo
             ),
-            SizedBox(height: screenHeight * 0.05), // 5% spacing
-            // Responsive text that scales with screen size
+            SizedBox(height: screenHeight * 0.05),
+            // Responsive text
             Text(
               'Health Care',
               style: TextStyle(
-                fontSize: screenWidth * 0.06, // Font size is 8% of screen width
+                fontSize: screenWidth * 0.06,  // Adjust font size
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,
               ),
             ),
+            SizedBox(height: screenHeight * 0.02),
             Column(
               children: [
-                Text('A Product By',style: TextStyle(color: AppColors.secondary,fontSize: screenWidth * 0.03),),
-                Text('Foxton',style: TextStyle(color: AppColors.secondary,fontSize: screenWidth * 0.03),),
+                Text(
+                  'A Product By',
+                  style: TextStyle(
+                    color: AppColors.secondary,
+                    fontSize: screenWidth * 0.03,
+                  ),
+                ),
+                Text(
+                  'Foxton',
+                  style: TextStyle(
+                    color: AppColors.secondary,
+                    fontSize: screenWidth * 0.03,
+                  ),
+                ),
               ],
             ),
           ],
