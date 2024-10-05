@@ -91,6 +91,31 @@ Widget custombuildTextField(String label,
   );
 }
 
+Widget customIPbuildTextField(String label,
+    {TextInputType inputType = TextInputType.text}) {
+  return TextField(
+    readOnly: true,
+    decoration: InputDecoration(
+      isDense: true,
+      // Reduces the overall height of the TextField
+      contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+      hintText: label,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.blue, width: 2.0),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.lightBlue, width: 1),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+    ),
+    keyboardType: inputType,
+  );
+}
+
 class Custom_Logo extends StatelessWidget {
   final String path;
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:foxcare_app/core/theme/colors.dart';
+import 'package:foxcare_app/features/presentation/pages/ip_admission.dart';
 import 'package:foxcare_app/features/presentation/pages/patient_registration.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import '../widgets/custom_elements.dart';
+import 'op_counters.dart';
 import 'op_ticket.dart';
 
 class ReceptionDashboard extends StatefulWidget {
@@ -78,9 +80,17 @@ class _ReceptionDashboardState extends State<ReceptionDashboard> {
           );
         },Iconsax.receipt),
         Divider(height: 5,color:Colors.grey,),
-        buildDrawerItem(2, 'IP Admission', () {},Iconsax.add_circle),
+        buildDrawerItem(2, 'IP Admission', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => IpAdmissionPage()),
+          );
+        },Iconsax.add_circle),
         Divider(height: 5,color:Colors.grey,),
-        buildDrawerItem(3, 'OP Counters', () {},Iconsax.square),
+        buildDrawerItem(3, 'OP Counters', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => OpCounters()),
+          );
+        },Iconsax.square),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(4, 'Admission Statement', () {},Iconsax.status),
         Divider(height: 5,color:Colors.grey,),
