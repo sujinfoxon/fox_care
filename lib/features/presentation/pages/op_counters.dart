@@ -116,7 +116,12 @@ class _OpCountersState extends State<OpCounters> {
               color: Colors.blue.shade100,
               child: buildDrawerContent(), // Sidebar always open for web view
             ),
-          SingleChildScrollView(child: dashboard()),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+                child: dashboard(),
+            ),
+          ),
         ],
       ),
     );
@@ -203,198 +208,197 @@ class _OpCountersState extends State<OpCounters> {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobile = screenWidth < 600;
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'OP Counter Status :',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 30,),
-          Row(
-            children: [
-              Text('Total Counters : '),
-              SizedBox(
-                width: 200,
-                  child: CustomTextField(hintText: 'Total Counters'),),
-              SizedBox(width: 20,),
-
-              Text('Total Token Genenrated : '),
-              SizedBox(
-                  width: 250,
-                  child: CustomTextField(hintText: 'Total Token Generated'),),
-
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            children: [
-              Text('Waiting Tokens : '),
-              SizedBox(
-                width: 250,
-                child: CustomTextField(hintText: 'Total Waiting Tokens'),),
-            ],
-          ),
-          SizedBox(height: 30,),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal, // Add horizontal scrolling for tables
-            child: Table(
-              border: TableBorder.all(),
-              columnWidths: {
-                0: FixedColumnWidth(150.0), // Set fixed width for each column
-                1: FixedColumnWidth(150.0),
-                2: FixedColumnWidth(150.0),
-              },
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'OP Counter Status :',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 30,),
+            Row(
               children: [
-                TableRow(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Counter 1', style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Counter 2', style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Counter 3', style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Dr. Rajesh (General Phy)'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Dr. Lekshmi (Cardiology)'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Dr. Babu (Orthopaedician)'),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('5, 20, 25, 30'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('8, 9, 10, 14'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('2, 4, 19, 31'),
-                    ),
-                  ],
-                ),
+                Text('Total Counters : '),
+                SizedBox(
+                  width: 200,
+                    child: CustomTextField(hintText: 'Total Counters'),),
+                SizedBox(width: 20,),
+
+                Text('Total Token Genenrated : '),
+                SizedBox(
+                    width: 250,
+                    child: CustomTextField(hintText: 'Total Token Generated'),),
+
               ],
             ),
-          ),
-
-          SizedBox(height: 30,),
-
-          // List of entries (replacing table)
-          SizedBox(height: 20),
-          Text(
-            'Missing Tokens:',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 20),
-
-
-// Wrapping the ListView.builder in a SizedBox to give it constrained width
-          SizedBox(
-            width: MediaQuery.of(context).size.width/1.5, // Provide a defined width for the ListView
-            height: 300.0, // Provide a defined height for the ListView
-            child: ListView.builder(
-              itemCount: missingTokens.length, // Number of missing tokens
-              itemBuilder: (context, index) {
-                final tokenData = missingTokens[index]; // Token data for each row
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: Row(
+            SizedBox(height: 20,),
+            Row(
+              children: [
+                Text('Waiting Tokens : '),
+                SizedBox(
+                  width: 250,
+                  child: CustomTextField(hintText: 'Total Waiting Tokens'),),
+              ],
+            ),
+            SizedBox(height: 30,),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal, // Add horizontal scrolling for tables
+              child: Table(
+                border: TableBorder.all(),
+                columnWidths: {
+                  0: FixedColumnWidth(150.0), // Set fixed width for each column
+                  1: FixedColumnWidth(150.0),
+                  2: FixedColumnWidth(150.0),
+                },
+                children: [
+                  TableRow(
                     children: [
-                      // Token Number
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          'Token: ${tokenData['token']}',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Counter 1', style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
-
-                      // OP Number
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          'OP No: ${tokenData['opNumber']}',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Counter 2', style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
-
-                      // Name
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          'Name: ${tokenData['name']}',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-
-                      // Age
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          'Age: ${tokenData['age']}',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-
-                      // Phone
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          'Phone: ${tokenData['phone']}',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-
-                      // Action Dropdown
-                      Expanded(
-                        flex: 1,
-                        child: DropdownButton<String>(
-                          value: tokenData['status'], // Default selected value
-                          items: ['Missing', 'Not Interested', 'Returned'].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              tokenData['status'] = newValue; // Update selected value
-                            });
-                          },
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Counter 3', style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
-                );
-              },
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Dr. Rajesh (General Phy)'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Dr. Lekshmi (Cardiology)'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Dr. Babu (Orthopaedician)'),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('5, 20, 25, 30'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('8, 9, 10, 14'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('2, 4, 19, 31'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
 
-        ],
+            SizedBox(height: 30,),
+
+            // List of entries (replacing table)
+            SizedBox(height: 20),
+            Text(
+              'Missing Tokens:',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+
+
+        // Wrapping the ListView.builder in a SizedBox to give it constrained width
+            SizedBox(
+              width: MediaQuery.of(context).size.width/1.4, // Provide a defined width for the ListView
+              height: 400.0, // Provide a defined height for the ListView
+              child: ListView.builder(
+                itemCount: missingTokens.length, // Number of missing tokens
+                itemBuilder: (context, index) {
+                  final tokenData = missingTokens[index]; // Token data for each row
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      children: [
+                        // Token Number
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Token: ${tokenData['token']}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        // OP Number
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'OP No: ${tokenData['opNumber']}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        // Name
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Name: ${tokenData['name']}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        // Age
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Age: ${tokenData['age']}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        // Phone
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Phone: ${tokenData['phone']}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+
+                        // Action Dropdown
+                        Expanded(
+                          flex: 1,
+                          child: DropdownButton<String>(
+                            value: tokenData['status'], // Default selected value
+                            items: ['Missing', 'Not Interested', 'Returned'].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                tokenData['status'] = newValue; // Update selected value
+                              });
+                            },
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+
+          ],
+        ),
       ),
     );
   }

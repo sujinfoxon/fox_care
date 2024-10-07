@@ -11,6 +11,8 @@ import 'package:foxcare_app/features/presentation/pages/doctors_dashboard.dart';
 import 'package:foxcare_app/features/presentation/pages/reception_dashboard.dart';
 import 'package:foxcare_app/features/presentation/pages/login_page.dart';
 import 'features/presentation/pages/doctor_schedule.dart';
+import 'features/presentation/pages/ip_admission.dart';
+import 'features/presentation/pages/op_ticket.dart';
 import 'firebase_options.dart'; // Import firebase config options
 
 void main() async {

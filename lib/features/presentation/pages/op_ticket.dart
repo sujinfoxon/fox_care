@@ -246,152 +246,234 @@ class _OpTicketPageState extends State<OpTicketPage> {
   }
 
   Widget buildSingleColumnForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('OP Ticket Information:',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-        SizedBox(height: 20),
-        if (isSearchPerformed) ...[
-          if (selectedPatient != null) buildPatientDetailsForm(),
-        ],
-      ],
+    return  Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Patient Search:',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text('Enter OP Number : ', style: TextStyle(fontSize: 22)),
+                SizedBox(
+                  width: 250,
+                  child: CustomTextField(hintText: 'OP Number'),
+                ),
+                SizedBox(width: 20),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text('Enter Phone Number : ', style: TextStyle(fontSize: 22)),
+                SizedBox(
+                  width: 250,
+                  child: CustomTextField(hintText: 'Phone Number'),
+                ),
+                SizedBox(width: 20),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 250,
+                  child: CustomButton(
+                    label: 'Search',
+                    onPressed: () {
+                      setState(() {
+                        isSearchPerformed = true; // Show the table after search
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 40),
+            if (isSearchPerformed) ...[
+              Text('Search Results:',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: [
+                    DataColumn(label: Text('OP Number')),
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Age')),
+                    DataColumn(label: Text('Phone')),
+                    DataColumn(label: Text('Address')),
+                  ],
+                  rows: searchResults.map((result) {
+                    return DataRow(
+                      selected: selectedPatient == result,
+                      onSelectChanged: (isSelected) {
+                        setState(() {
+                          selectedPatient = result;
+                        });
+                      },
+                      cells: [
+                        DataCell(Text(result['opNumber']!)),
+                        DataCell(Text(result['name']!)),
+                        DataCell(Text(result['age']!)),
+                        DataCell(Text(result['phone']!)),
+                        DataCell(Text(result['address']!)),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ),
+              SizedBox(height: 30),
+              if (selectedPatient != null) buildPatientDetailsForm(),
+            ],
+          ],
+        ),
+      ),
     );
   }
 
   Widget buildPatientDetailsForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('OP Ticket Generation :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-        SizedBox(height: 20,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox( width: 100,
-                child: Text('OP Number : '),),
-            SizedBox( width: 200,
-                child: buildTextField('OP Number', initialValue: selectedPatient?['opNumber'],),),
-            SizedBox(width: 20,),
-            SizedBox( width: 80,
-                child: Text('Name : '),),
-            SizedBox( width: 200,
-                child: buildTextField('OP Number', initialValue: selectedPatient?['name'],),),
-          ],
-        ),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('OP Ticket Generation :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+          SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox( width: 100,
+                  child: Text('OP Number : '),),
+              SizedBox( width: 200,
+                  child: buildTextField('OP Number', initialValue: selectedPatient?['opNumber'],),),
+              SizedBox(width: 20,),
+              SizedBox( width: 80,
+                  child: Text('Name : '),),
+              SizedBox( width: 200,
+                  child: buildTextField('OP Number', initialValue: selectedPatient?['name'],),),
+            ],
+          ),
 
-        SizedBox(height: 20),
+          SizedBox(height: 20),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
 
-          children: [
-            SizedBox( width: 100,
-                child: Text('AGE : '),),
-            SizedBox( width: 200,
-                child: buildTextField('OP Number',initialValue: selectedPatient?['age'],
-                    inputType: TextInputType.number),),
-            SizedBox(width: 20,),
-            SizedBox( width: 80,
-                child: Text('Phone : '),),
-            SizedBox( width: 200,
+            children: [
+              SizedBox( width: 100,
+                  child: Text('AGE : '),),
+              SizedBox( width: 200,
+                  child: buildTextField('OP Number',initialValue: selectedPatient?['age'],
+                      inputType: TextInputType.number),),
+              SizedBox(width: 20,),
+              SizedBox( width: 80,
+                  child: Text('Phone : '),),
+              SizedBox( width: 200,
+                  child: buildTextField('Phone',
+                      initialValue: selectedPatient?['phone'],
+                      inputType: TextInputType.phone),),
+
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+
+            children: [
+              SizedBox( width: 100,
+                  child: Text('Address : '),),
+              SizedBox( width: 200,
+                  child: buildTextField('Address', initialValue: selectedPatient?['address']),),
+              SizedBox(width: 20,),
+              SizedBox( width: 80,
+                  child: Text('Last OP Date : '),),
+              SizedBox( width: 200,
                 child: buildTextField('Phone',
                     initialValue: selectedPatient?['phone'],
                     inputType: TextInputType.phone),),
 
-          ],
-        ),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-
-          children: [
-            SizedBox( width: 100,
-                child: Text('Address : '),),
-            SizedBox( width: 200,
-                child: buildTextField('Address', initialValue: selectedPatient?['address']),),
-            SizedBox(width: 20,),
-            SizedBox( width: 80,
-                child: Text('Last OP Date : '),),
-            SizedBox( width: 200,
-              child: buildTextField('Phone',
-                  initialValue: selectedPatient?['phone'],
-                  inputType: TextInputType.phone),),
-
-          ],
-        ),
-
-        SizedBox(height: 20),
-
-        Text('Token Information :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-        SizedBox(height: 20,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(width:70,child: Text('Date : ')),
-
-            SizedBox(width:220,child: buildTextField('sdfsdf',initialValue: '$date')),
-            SizedBox(width: 30,),
-            SizedBox(width:80,child: Text('TOKEN : ')),
-
-            SizedBox(width:220,child: CustomTextField(hintText: 'Enter Token Number',)),
-
-          ],
-        ),
-        SizedBox(height: 20),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(width:80,child: Text('Counter : ')),
-
-            SizedBox(width:220,child: CustomTextField(hintText: 'Counter',)),
-            SizedBox(width: 20,),
-            SizedBox(width:80,child: Text('Doctor : ')),
-
-            SizedBox(width:220,child: CustomTextField(hintText: 'Enter Doctor Name',)),
-
-          ],
-        ),
-        SizedBox(height: 20),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(width:80,child: Text('BP : ')),
-
-            SizedBox(width:220,child: CustomTextField(hintText: 'Enter Blood Pressure',)),
-            SizedBox(width: 20,),
-            SizedBox(width:80,child: Text('TEMP : ')),
-
-            SizedBox(width:220,child: CustomTextField(hintText: 'Enter Temperature',)),
-
-          ],
-        ),
-        SizedBox(height: 20),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(width:90,child: Text('Blood Sugar : ')),
-
-            SizedBox(width:220,child: CustomTextField(hintText: 'Enter Blood Sugar Level',)),
-
-
-          ],
-        ),
-        SizedBox(height: 20),
-        SizedBox(width: 600, child: CustomTextField(hintText: 'Enter Other Comments',),),
-
-        SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.only(left: 250),
-          child: SizedBox(
-            width: 200,
-            child: CustomButton(label: 'Generate', onPressed: () {},),
+            ],
           ),
-        ),
-      ],
+
+          SizedBox(height: 20),
+
+          Text('Token Information :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+          SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(width:70,child: Text('Date : ')),
+
+              SizedBox(width:220,child: buildTextField('sdfsdf',initialValue: '$date')),
+              SizedBox(width: 30,),
+              SizedBox(width:80,child: Text('TOKEN : ')),
+
+              SizedBox(width:220,child: CustomTextField(hintText: 'Enter Token Number',)),
+
+            ],
+          ),
+          SizedBox(height: 20),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(width:80,child: Text('Counter : ')),
+
+              SizedBox(width:220,child: CustomTextField(hintText: 'Counter',)),
+              SizedBox(width: 20,),
+              SizedBox(width:80,child: Text('Doctor : ')),
+
+              SizedBox(width:220,child: CustomTextField(hintText: 'Enter Doctor Name',)),
+
+            ],
+          ),
+          SizedBox(height: 20),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(width:80,child: Text('BP : ')),
+
+              SizedBox(width:220,child: CustomTextField(hintText: 'Enter Blood Pressure',)),
+              SizedBox(width: 20,),
+              SizedBox(width:80,child: Text('TEMP : ')),
+
+              SizedBox(width:220,child: CustomTextField(hintText: 'Enter Temperature',)),
+
+            ],
+          ),
+          SizedBox(height: 20),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(width:90,child: Text('Blood Sugar : ')),
+
+              SizedBox(width:220,child: CustomTextField(hintText: 'Enter Blood Sugar Level',)),
+
+
+            ],
+          ),
+          SizedBox(height: 20),
+          SizedBox(width: 600, child: CustomTextField(hintText: 'Enter Other Comments',),),
+
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.only(left: 250),
+            child: SizedBox(
+              width: 200,
+              child: CustomButton(label: 'Generate', onPressed: () {},),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -74,31 +74,36 @@ class _doctorScheduleState extends State<doctorSchedule> {
         ),
         buildDrawerItem(0, 'Patient Registration', () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => PatientRegistration()),
+            MaterialPageRoute(builder: (context) => PatientRegistration(),
+            ),
           );
         },Iconsax.mask),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(1, 'OP Ticket', () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => OpTicketPage()),
+            MaterialPageRoute(builder: (context) => OpTicketPage(),
+            ),
           );
         },Iconsax.receipt),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(2, 'IP Admission', () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => IpAdmissionPage()),
+            MaterialPageRoute(builder: (context) => IpAdmissionPage(),
+            ),
           );
         },Iconsax.add_circle),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(3, 'OP Counters', () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => OpCounters()),
+            MaterialPageRoute(builder: (context) => OpCounters(),
+            ),
           );
         },Iconsax.square),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(4, 'Admission Status', () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => AdmissionStatus()),
+            MaterialPageRoute(builder: (context) => AdmissionStatus(),
+            ),
           );
         },Iconsax.status),
         Divider(height: 5,color:Colors.grey,),
@@ -141,7 +146,6 @@ class _doctorScheduleState extends State<doctorSchedule> {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobile = screenWidth < 600;
 
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Align(
@@ -149,7 +153,6 @@ class _doctorScheduleState extends State<doctorSchedule> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Text(
               'Todays Doctor Schedule',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
@@ -171,45 +174,51 @@ class _doctorScheduleState extends State<doctorSchedule> {
 
             SizedBox(height: 20,),
 
-            Row(
-              children: [
-                Text('Doctor Name :'),
-                SizedBox(width: 65),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter Doctor Name'),
-                ),
-                SizedBox(width: 20,),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text('Doctor Name :'),
+                  SizedBox(width: 65),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter Doctor Name'),
+                  ),
+                  SizedBox(width: 20,),
 
-                Text('Speciality :'),
-                SizedBox(width: 20),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter Speciality'),
-                ),
+                  Text('Speciality :'),
+                  SizedBox(width: 20),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter Speciality'),
+                  ),
 
-              ],
+                ],
+              ),
             ),
             SizedBox(height: 20,),
 
-            Row(
-              children: [
-                Text('OP Intime :'),
-                SizedBox(width: 65),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter time in'),
-                ),
-                SizedBox(width: 20,),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text('OP Intime :'),
+                  SizedBox(width: 65),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter time in'),
+                  ),
+                  SizedBox(width: 20,),
 
-                Text('OP Outtime :'),
-                SizedBox(width: 20),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter to time'),
-                ),
+                  Text('OP Outtime :'),
+                  SizedBox(width: 20),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter to time'),
+                  ),
 
-              ],
+                ],
+              ),
             ),
 
             SizedBox(
@@ -228,58 +237,67 @@ class _doctorScheduleState extends State<doctorSchedule> {
             SizedBox(
               height: 20,
             ),
-            Row(
-              children: [
-                Text('Counter 2 :',style: TextStyle(fontWeight: FontWeight.bold),),
-                SizedBox(width: 65),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter Counter Number'),
-                ),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text('Counter 2 :',style: TextStyle(fontWeight: FontWeight.bold),),
+                  SizedBox(width: 65),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter Counter Number'),
+                  ),
+                ],
+              ),
             ),
 
             SizedBox(height: 20,),
 
-            Row(
-              children: [
-                Text('Doctor Name :'),
-                SizedBox(width: 65),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter Doctor Name'),
-                ),
-                SizedBox(width: 20,),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text('Doctor Name :'),
+                  SizedBox(width: 65),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter Doctor Name'),
+                  ),
+                  SizedBox(width: 20,),
 
-                Text('Speciality :'),
-                SizedBox(width: 20),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter Speciality'),
-                ),
+                  Text('Speciality :'),
+                  SizedBox(width: 20),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter Speciality'),
+                  ),
 
-              ],
+                ],
+              ),
             ),
             SizedBox(height: 20,),
 
-            Row(
-              children: [
-                Text('OP Intime :'),
-                SizedBox(width: 65),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter time in'),
-                ),
-                SizedBox(width: 20,),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text('OP Intime :'),
+                  SizedBox(width: 65),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter time in'),
+                  ),
+                  SizedBox(width: 20,),
 
-                Text('OP Outtime :'),
-                SizedBox(width: 20),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter to time'),
-                ),
+                  Text('OP Outtime :'),
+                  SizedBox(width: 20),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter to time'),
+                  ),
 
-              ],
+                ],
+              ),
             ),
 
             SizedBox(
@@ -299,57 +317,66 @@ class _doctorScheduleState extends State<doctorSchedule> {
               height: 20,
             ),
 
-            Row(
-              children: [
-                Text('Counter 3 :',style: TextStyle(fontWeight: FontWeight.bold),),
-                SizedBox(width: 65),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter Counter Number'),
-                ),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text('Counter 3 :',style: TextStyle(fontWeight: FontWeight.bold),),
+                  SizedBox(width: 65),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter Counter Number'),
+                  ),
+                ],
+              ),
             ),
 
             SizedBox(height: 20,),
 
-            Row(
-              children: [
-                Text('Doctor Name :'),
-                SizedBox(width: 65),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter Doctor Name'),
-                ),
-                SizedBox(width: 20,),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text('Doctor Name :'),
+                  SizedBox(width: 65),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter Doctor Name'),
+                  ),
+                  SizedBox(width: 20,),
 
-                Text('Speciality :'),
-                SizedBox(width: 20),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter Speciality'),
-                ),
-              ],
+                  Text('Speciality :'),
+                  SizedBox(width: 20),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter Speciality'),
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 20,),
 
-            Row(
-              children: [
-                Text('OP Intime :'),
-                SizedBox(width: 65),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter time in'),
-                ),
-                SizedBox(width: 20,),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text('OP Intime :'),
+                  SizedBox(width: 65),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter time in'),
+                  ),
+                  SizedBox(width: 20,),
 
-                Text('OP Outtime :'),
-                SizedBox(width: 20),
-                SizedBox(
-                  width: 200,
-                  child: customIPbuildTextField('Enter to time'),
-                ),
+                  Text('OP Outtime :'),
+                  SizedBox(width: 20),
+                  SizedBox(
+                    width: 200,
+                    child: customIPbuildTextField('Enter to time'),
+                  ),
 
-              ],
+                ],
+              ),
             ),
 
             SizedBox(
