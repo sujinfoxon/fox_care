@@ -3,6 +3,7 @@ import 'package:foxcare_app/features/presentation/pages/ip_admission.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import '../widgets/custom_elements.dart';
+import 'admission_status.dart';
 import 'op_counters.dart';
 import 'op_ticket.dart';
 
@@ -100,7 +101,11 @@ class _PatientRegistrationState extends State<PatientRegistration> {
           );
         },Iconsax.square),
         Divider(height: 5,color:Colors.grey,),
-        buildDrawerItem(4, 'Admission Statement', () {},Iconsax.status),
+        buildDrawerItem(4, 'Admission Status', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => AdmissionStatus()),
+          );
+        },Iconsax.status),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(5, 'Doctor Visit Schedule', () {},Iconsax.hospital),
 

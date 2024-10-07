@@ -4,6 +4,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import '../../../core/theme/colors.dart';
 import '../widgets/custom_elements.dart';
+import 'admission_status.dart';
 import 'ip_admission.dart';
 import 'op_ticket.dart';
 
@@ -22,12 +23,74 @@ class _OpCountersState extends State<OpCounters> {
   List<String> actions = ['Cancel', 'Returned', 'Missing'];
   ScrollController _scrollController = ScrollController();
 
+  List<Map<String, dynamic>> counterData = [
+    {
+      'counter': 1,
+      'doctor': 'Dr. Rajesh (General Phy)',
+      'tokens': [20, 25, 30],
+      'patients': [
+        {'opNumber': 101, 'name': 'John Doe', 'age': 35, 'phone': '1234567890', 'token': 20},
+        {'opNumber': 102, 'name': 'Jane Smith', 'age': 28, 'phone': '9876543210', 'token': 25},
+        {'opNumber': 103, 'name': 'Alice Brown', 'age': 45, 'phone': '1122334455', 'token': 30},
+      ],
+    },
+    {
+      'counter': 2,
+      'doctor': 'Dr. Lekshmi (Cardiology)',
+      'tokens': [8, 9, 10],
+      'patients': [
+        {'opNumber': 201, 'name': 'Bob Johnson', 'age': 50, 'phone': '6677889900', 'token': 9},
+      ],
+    },
+    {
+      'counter': 3,
+      'doctor': 'Dr. Babu (Orthopaedician)',
+      'tokens': [2, 4, 19],
+      'patients': [
+        {'opNumber': 301, 'name': 'Charlie Davis', 'age': 60, 'phone': '5566778899', 'token': 4},
+      ],
+    },
+  ];
+
+  List<Map<String, dynamic>> missingTokens = [
+    {
+      'token': '20',
+      'opNumber': 'OP123',
+      'name': 'John Doe',
+      'age': '45',
+      'phone': '1234567890',
+      'status': 'Missing', // Default dropdown value
+    },
+    {
+      'token': '25',
+      'opNumber': 'OP124',
+      'name': 'Jane Doe',
+      'age': '30',
+      'phone': '0987654321',
+      'status': 'Missing', // Default dropdown value
+    },
+    // Add more token data here...
+  ];
+
+  // List to store selected actions for each patient
+  List<String?> selectedActions = [];
+
   @override
-  void dispose() {
-    // Dispose the controller when it's no longer needed
-    _scrollController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    // Initialize the selected actions list based on the number of patients
+    selectedActions = List<String?>.filled(getTotalPatientCount(), null);
   }
+
+  // Helper method to get the total number of patients
+  int getTotalPatientCount() {
+    return counterData.fold(0, (sum, counter) {
+      // Cast 'patients' to List to ensure Dart understands the type
+      List patients = counter['patients'] as List;
+      return sum + patients.length;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // Get the screen width using MediaQuery
@@ -95,7 +158,11 @@ class _OpCountersState extends State<OpCounters> {
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(3, 'OP Counters', () {},Iconsax.square),
         Divider(height: 5,color:Colors.grey,),
-        buildDrawerItem(4, 'Admission Statement', () {},Iconsax.status),
+        buildDrawerItem(4, 'Admission Status', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => AdmissionStatus()),
+          );
+        },Iconsax.status),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(5, 'Doctor Visit Schedule', () {},Iconsax.hospital),
 
@@ -241,17 +308,95 @@ class _OpCountersState extends State<OpCounters> {
             'Missing Tokens:',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 10),
-
-          // Wrap ListView.builder inside LayoutBuilder to constrain its width
-          
+          SizedBox(height: 20),
 
 
+// Wrapping the ListView.builder in a SizedBox to give it constrained width
+          SizedBox(
+            width: MediaQuery.of(context).size.width/1.5, // Provide a defined width for the ListView
+            height: 300.0, // Provide a defined height for the ListView
+            child: ListView.builder(
+              itemCount: missingTokens.length, // Number of missing tokens
+              itemBuilder: (context, index) {
+                final tokenData = missingTokens[index]; // Token data for each row
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: Row(
+                    children: [
+                      // Token Number
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'Token: ${tokenData['token']}',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+
+                      // OP Number
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'OP No: ${tokenData['opNumber']}',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+
+                      // Name
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Name: ${tokenData['name']}',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+
+                      // Age
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'Age: ${tokenData['age']}',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+
+                      // Phone
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'Phone: ${tokenData['phone']}',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+
+                      // Action Dropdown
+                      Expanded(
+                        flex: 1,
+                        child: DropdownButton<String>(
+                          value: tokenData['status'], // Default selected value
+                          items: ['Missing', 'Not Interested', 'Returned'].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              tokenData['status'] = newValue; // Update selected value
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
 
         ],
       ),
     );
   }
-
 
 }

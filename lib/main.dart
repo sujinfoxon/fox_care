@@ -3,11 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foxcare_app/bloc/auth/auth_bloc.dart';
+import 'package:foxcare_app/features/presentation/pages/admission_status.dart';
+import 'package:foxcare_app/features/presentation/pages/op_counters.dart';
 import 'package:foxcare_app/repository/auth_repository.dart';
 import 'package:foxcare_app/core/theme/colors.dart';
 import 'package:foxcare_app/features/presentation/pages/doctors_dashboard.dart';
 import 'package:foxcare_app/features/presentation/pages/reception_dashboard.dart';
 import 'package:foxcare_app/features/presentation/pages/login_page.dart';
+import 'features/presentation/pages/doctor_schedule.dart';
 import 'firebase_options.dart'; // Import firebase config options
 
 void main() async {
@@ -45,7 +48,8 @@ class MyApp extends StatelessWidget {
           '/receptionHome': (context) => ReceptionDashboard(),
         },
         initialRoute: '/',  // Define the initial route
-        home: SplashScreen(),  // Starting screen is the splash screen
+        //home: SplashScreen(),  // Starting screen is the splash screen
+        home: SplashScreen(),
       ),
     );
   }

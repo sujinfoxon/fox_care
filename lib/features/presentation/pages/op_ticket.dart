@@ -4,6 +4,8 @@ import 'package:foxcare_app/features/presentation/pages/patient_registration.dar
 import 'package:foxcare_app/features/presentation/widgets/custom_elements.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
+import 'admission_status.dart';
+
 class OpTicketPage extends StatefulWidget {
   @override
   State<OpTicketPage> createState() => _OpTicketPageState();
@@ -117,7 +119,11 @@ class _OpTicketPageState extends State<OpTicketPage> {
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(3, 'OP Counters', () {},Iconsax.square),
         Divider(height: 5,color:Colors.grey,),
-        buildDrawerItem(4, 'Admission Statement', () {},Iconsax.status),
+        buildDrawerItem(4, 'Admission Status', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => AdmissionStatus()),
+          );
+        },Iconsax.status),
         Divider(height: 5,color:Colors.grey,),
         buildDrawerItem(5, 'Doctor Visit Schedule', () {},Iconsax.hospital),
 
