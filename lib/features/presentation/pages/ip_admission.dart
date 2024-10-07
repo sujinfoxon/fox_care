@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foxcare_app/features/presentation/pages/admission_status.dart';
+import 'package:foxcare_app/features/presentation/pages/doctor_schedule.dart';
 import 'package:foxcare_app/features/presentation/pages/op_counters.dart';
 import 'package:foxcare_app/features/presentation/pages/patient_registration.dart';
 import 'package:foxcare_app/features/presentation/widgets/custom_elements.dart';
@@ -161,12 +163,20 @@ class _IpAdmissionPageState extends State<IpAdmissionPage> {
           height: 5,
           color: Colors.grey,
         ),
-        buildDrawerItem(4, 'Admission Statement', () {}, Iconsax.status),
+        buildDrawerItem(4, 'Admission Status', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => AdmissionStatus()),
+          );
+        }, Iconsax.status),
         Divider(
           height: 5,
           color: Colors.grey,
         ),
-        buildDrawerItem(5, 'Doctor Visit Schedule', () {}, Iconsax.hospital),
+        buildDrawerItem(5, 'Doctor Visit Schedule', () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => doctorSchedule()),
+          );
+        }, Iconsax.hospital),
 
         Divider(
           height: 5,
