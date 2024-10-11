@@ -68,7 +68,7 @@ class CustomTextField extends StatelessWidget {
 }
 
 Widget custombuildTextField(String label,
-    {TextInputType inputType = TextInputType.text}) {
+    {TextInputType inputType = TextInputType.text, TextEditingController? controller}) {
   return TextField(
     decoration: InputDecoration(
       isDense: true,

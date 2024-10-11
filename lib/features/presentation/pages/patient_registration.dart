@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foxcare_app/bloc/patient/patient_bloc.dart';
+import 'package:foxcare_app/bloc/patient/patient_event.dart';
+import 'package:foxcare_app/bloc/patient/patient_state.dart';
 import 'package:foxcare_app/features/presentation/pages/ip_admission.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
@@ -16,6 +20,22 @@ class _PatientRegistrationState extends State<PatientRegistration> {
   int selectedIndex = 0;
   String selectedSex = 'Male'; // Default value for Sex
   String selectedBloodGroup = 'A+'; // Default value for Blood Group
+  final TextEditingController firstname = TextEditingController();
+  final TextEditingController lastname = TextEditingController();
+  final TextEditingController middlename = TextEditingController();
+  final TextEditingController age = TextEditingController();
+  final TextEditingController dob = TextEditingController();
+  final TextEditingController address1 = TextEditingController();
+  final TextEditingController address2 = TextEditingController();
+  final TextEditingController landmark = TextEditingController();
+  final TextEditingController city = TextEditingController();
+  final TextEditingController state = TextEditingController();
+  final TextEditingController pincode = TextEditingController();
+  final TextEditingController phone1 = TextEditingController();
+  final TextEditingController phone2 = TextEditingController();
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,46 +101,65 @@ class _PatientRegistrationState extends State<PatientRegistration> {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => PatientRegistration()),
           );
-        },Iconsax.mask),
-        Divider(height: 5,color:Colors.grey,),
+        }, Iconsax.mask),
+        Divider(
+          height: 5,
+          color: Colors.grey,
+        ),
         buildDrawerItem(1, 'OP Ticket', () {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => OpTicketPage()),
           );
-        },Iconsax.receipt),
-        Divider(height: 5,color:Colors.grey,),
+        }, Iconsax.receipt),
+        Divider(
+          height: 5,
+          color: Colors.grey,
+        ),
         buildDrawerItem(2, 'IP Admission', () {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => IpAdmissionPage()),
           );
-        },Iconsax.add_circle),
-        Divider(height: 5,color:Colors.grey,),
+        }, Iconsax.add_circle),
+        Divider(
+          height: 5,
+          color: Colors.grey,
+        ),
         buildDrawerItem(3, 'OP Counters', () {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => OpCounters()),
           );
-        },Iconsax.square),
-        Divider(height: 5,color:Colors.grey,),
+        }, Iconsax.square),
+        Divider(
+          height: 5,
+          color: Colors.grey,
+        ),
         buildDrawerItem(4, 'Admission Status', () {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => AdmissionStatus()),
           );
-        },Iconsax.status),
-        Divider(height: 5,color:Colors.grey,),
-        buildDrawerItem(5, 'Doctor Visit Schedule', () {},Iconsax.hospital),
-
-        Divider(height: 5,color:Colors.grey,),
+        }, Iconsax.status),
+        Divider(
+          height: 5,
+          color: Colors.grey,
+        ),
+        buildDrawerItem(5, 'Doctor Visit Schedule', () {}, Iconsax.hospital),
+        Divider(
+          height: 5,
+          color: Colors.grey,
+        ),
         buildDrawerItem(7, 'Logout', () {
           // Handle logout action
-        },Iconsax.logout),
+        }, Iconsax.logout),
       ],
     );
   }
 
-  Widget buildDrawerItem(int index, String title, VoidCallback onTap,IconData icon) {
+  Widget buildDrawerItem(
+      int index, String title, VoidCallback onTap, IconData icon) {
     return ListTile(
       selected: selectedIndex == index,
-      selectedTileColor: Colors.blueAccent.shade100, // Highlight color for the selected item
+      selectedTileColor: Colors.blueAccent.shade100,
+      // Highlight color for the selected item
       leading: Icon(
         icon, // Replace with actual icons
         color: selectedIndex == index ? Colors.blue : Colors.white,
@@ -128,8 +167,8 @@ class _PatientRegistrationState extends State<PatientRegistration> {
       title: Text(
         title,
         style: TextStyle(
-            color: selectedIndex == index ? Colors.blue : Colors.black54,fontWeight: FontWeight.w700
-        ),
+            color: selectedIndex == index ? Colors.blue : Colors.black54,
+            fontWeight: FontWeight.w700),
       ),
       onTap: () {
         setState(() {
@@ -142,6 +181,7 @@ class _PatientRegistrationState extends State<PatientRegistration> {
 
   // Form layout for web with three columns
   Widget buildThreeColumnForm() {
+    final bloc = BlocProvider.of<PatientFormBloc>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -171,16 +211,19 @@ class _PatientRegistrationState extends State<PatientRegistration> {
             Expanded(
                 child: CustomTextField(
               hintText: 'First Name',
+              controller: firstname,
             )),
             SizedBox(width: 20),
             Expanded(
                 child: CustomTextField(
               hintText: 'Middle Name',
+              controller: middlename,
             )),
             SizedBox(width: 20),
             Expanded(
                 child: CustomTextField(
               hintText: 'Last Name',
+              controller: lastname,
             )),
           ],
         ),
@@ -209,49 +252,78 @@ class _PatientRegistrationState extends State<PatientRegistration> {
               child: Text('AGE :'),
             ),
             Expanded(
-                child: CustomTextField(hintText: '',),),
+              child: CustomTextField(
+                hintText: '',
+                controller: age,
+              ),
+            ),
             SizedBox(width: 20),
             SizedBox(
               width: 40,
               child: Text('DOB :'),
             ),
             Expanded(
-                child: CustomTextField(hintText: '(YYYY-MM-DD)',)
-            ),
+                child: CustomTextField(
+              hintText: '(YYYY-MM-DD)',
+              controller: dob,
+            )),
           ],
         ),
         SizedBox(height: 40),
-        CustomTextField(hintText: 'Address Line 1'),
+        CustomTextField(
+          hintText: 'Address Line 1',
+          controller: address1,
+        ),
         SizedBox(height: 30),
-        CustomTextField(hintText: 'Address Line 2'),
+        CustomTextField(
+          hintText: 'Address Line 2',
+          controller: address2,
+        ),
         SizedBox(height: 40),
         Row(
           children: [
-            Expanded(child: CustomTextField(hintText: "Land Mark",)),
+            Expanded(
+                child: CustomTextField(
+              hintText: "Land Mark",
+              controller: landmark,
+            )),
             SizedBox(width: 20),
-            Expanded(child: CustomTextField(hintText: "City",)),
+            Expanded(
+                child: CustomTextField(
+              hintText: "City",
+              controller: city,
+            )),
             SizedBox(width: 20),
-            Expanded(child: CustomTextField(hintText: "State",)),
+            Expanded(
+                child: CustomTextField(
+              hintText: "State",
+              controller: state,
+            )),
           ],
         ),
         SizedBox(height: 20),
         Row(
           children: [
             Expanded(
-                child:
-                    CustomTextField(hintText: 'Pincode',)),
+                child: CustomTextField(
+              hintText: 'Pincode',
+              controller: pincode,
+            )),
             SizedBox(width: 20),
             Expanded(
-                child:
-                CustomTextField(hintText: 'Phone Number 1',)),
+                child: CustomTextField(
+              hintText: 'Phone Number 1',
+              controller: phone1,
+            )),
             SizedBox(width: 20),
             Expanded(
-                child:
-                CustomTextField(hintText: 'Phone Number 2',)),
+                child: CustomTextField(
+              hintText: 'Phone Number 2',
+              controller: phone2,
+            )),
           ],
         ),
         SizedBox(height: 40),
-
         Row(
           children: [
             SizedBox(
@@ -268,13 +340,38 @@ class _PatientRegistrationState extends State<PatientRegistration> {
             }),
           ],
         ),
-
-
         SizedBox(height: 20),
         Center(
           child: SizedBox(
             width: 400,
-            child: CustomButton(label: 'Register', onPressed: () {},)
+            child: BlocBuilder<PatientFormBloc, PatientFormState>(
+              builder: (context, currentState) { // Renamed to currentState
+                return currentState is FormSubmitting
+                    ? CircularProgressIndicator()
+                    : CustomButton(
+                  label: 'Register',
+                  onPressed: () {
+                    bloc.add(SubmitForm(
+                      firstname: firstname.text,
+                      lastname: lastname.text,
+                      middlename: middlename.text,
+                      dob: dob.text,
+                      age: age.text,
+                      address1: address1.text,
+                      address2: address2.text,
+                      landmark: landmark.text,
+                      city: city.text,
+                      state: state.text, // This is still the state variable in your UI
+                      pincode: pincode.text,
+                      phone1: phone1.text,
+                      phone2: phone2.text,
+                      sex: selectedSex,
+                      bloodGroup: selectedBloodGroup,
+                    ));
+                  },
+                );
+              },
+            ),
           ),
         ),
       ],
@@ -289,12 +386,11 @@ class _PatientRegistrationState extends State<PatientRegistration> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
             Row(
               children: [
                 Text('OP Number ',
                     style:
-                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 SizedBox(
                     width: 200.0,
                     child: CustomTextField(
@@ -305,11 +401,11 @@ class _PatientRegistrationState extends State<PatientRegistration> {
           ],
         ),
         SizedBox(height: 20),
-        custombuildTextField('First Name'),
+        custombuildTextField('First Name', controller: firstname),
         SizedBox(height: 16),
-        custombuildTextField('Middle Name'),
+        custombuildTextField('Middle Name', controller: middlename),
         SizedBox(height: 16),
-        custombuildTextField('Last Name'),
+        custombuildTextField('Last Name', controller: lastname),
         SizedBox(height: 16),
         customDropdown('Sex', ['Male', 'Female', 'Other'], selectedSex,
             (value) {
@@ -318,25 +414,30 @@ class _PatientRegistrationState extends State<PatientRegistration> {
           });
         }),
         SizedBox(height: 16),
-        custombuildTextField('Age', inputType: TextInputType.number),
+        custombuildTextField('Age',
+            inputType: TextInputType.number, controller: age),
         SizedBox(height: 16),
-        custombuildTextField('DOB (YYYY-MM-DD)', inputType: TextInputType.datetime),
+        custombuildTextField('DOB (YYYY-MM-DD)',
+            inputType: TextInputType.datetime, controller: dob),
         SizedBox(height: 16),
-        custombuildTextField('Address Line 1'),
+        custombuildTextField('Address Line 1', controller: address1),
         SizedBox(height: 16),
-        custombuildTextField('Address Line 2'),
+        custombuildTextField('Address Line 2', controller: address2),
         SizedBox(height: 16),
-        custombuildTextField('Land Mark'),
+        custombuildTextField('Land Mark', controller: landmark),
         SizedBox(height: 16),
-        custombuildTextField('City'),
+        custombuildTextField('City', controller: city),
         SizedBox(height: 16),
-        custombuildTextField('State'),
+        custombuildTextField('State', controller: state),
         SizedBox(height: 16),
-        custombuildTextField('Pincode', inputType: TextInputType.number),
+        custombuildTextField('Pincode',
+            inputType: TextInputType.number, controller: pincode),
         SizedBox(height: 16),
-        custombuildTextField('Mobile 1', inputType: TextInputType.phone),
+        custombuildTextField('Mobile 1',
+            inputType: TextInputType.phone, controller: phone1),
         SizedBox(height: 16),
-        custombuildTextField('Mobile 2', inputType: TextInputType.phone),
+        custombuildTextField('Mobile 2',
+            inputType: TextInputType.phone, controller: phone2),
         SizedBox(height: 16),
         customDropdown(
             'Blood Group',
@@ -350,14 +451,14 @@ class _PatientRegistrationState extends State<PatientRegistration> {
         Center(
           child: SizedBox(
               width: 250,
-              child: CustomButton(label: 'Register', onPressed: () {},)
-          ),
+              child: CustomButton(
+                label: 'Register',
+                onPressed: () {},
+              )),
         ),
       ],
     );
   }
-
-
 
   // Helper widget to create Dropdowns
   Widget buildDrop(String label, List<String> items, String selectedItem,

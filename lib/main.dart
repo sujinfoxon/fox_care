@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foxcare_app/bloc/auth/auth_bloc.dart';
+import 'package:foxcare_app/bloc/patient/patient_bloc.dart';
 import 'package:foxcare_app/features/presentation/pages/admission_status.dart';
 import 'package:foxcare_app/features/presentation/pages/op_counters.dart';
 import 'package:foxcare_app/repository/auth_repository.dart';
@@ -37,6 +38,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(authRepository),
+        ),
+        BlocProvider(
+          create: (context) => PatientFormBloc(),
         ),
       ],
       child: MaterialApp(
