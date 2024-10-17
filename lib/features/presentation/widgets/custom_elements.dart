@@ -12,11 +12,15 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: 50,
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.secondary,
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.all(0), // Keep padding minimal
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // Set borderRadius to 12
+          ),
         ),
         onPressed: onPressed,
         child: Text(
@@ -170,7 +174,7 @@ Widget customDropdown(
         return DropdownMenuItem<String>(
 
           value: item,
-          child: Text(item),
+          child: Text(item,style: TextStyle(color: Colors.black),),
         );
       }).toList(),
       dropdownColor: Colors.white,

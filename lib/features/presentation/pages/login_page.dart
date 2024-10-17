@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foxcare_app/bloc/auth/auth_bloc.dart';
 import 'package:foxcare_app/core/theme/colors.dart';
 import 'package:foxcare_app/features/presentation/pages/reception_dashboard.dart';
@@ -25,7 +26,12 @@ class LoginScreen extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is AuthLoading) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child: SpinKitPumpingHeart(
+                color: Colors.blue,
+                size: 100,
+              ),
+            );
           }
           return LayoutBuilder(
             builder: (context, constraints) {
