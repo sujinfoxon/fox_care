@@ -6,16 +6,16 @@ import 'package:foxcare_app/bloc/auth/auth_bloc.dart';
 import 'package:foxcare_app/bloc/patient/patient_bloc.dart';
 import 'package:foxcare_app/features/presentation/pages/admission_status.dart';
 import 'package:foxcare_app/features/presentation/pages/op_counters.dart';
+import 'package:foxcare_app/features/presentation/receeption/op_ticket_generate.dart';
 import 'package:foxcare_app/repository/auth_repository.dart';
 import 'package:foxcare_app/core/theme/colors.dart';
 import 'package:foxcare_app/features/presentation/pages/doctors_dashboard.dart';
 import 'package:foxcare_app/features/presentation/pages/reception_dashboard.dart';
 import 'package:foxcare_app/features/presentation/pages/login_page.dart';
+import 'features/presentation/pages/doctor/doctor_dashboard.dart';
+import 'features/presentation/pages/doctor/rx_prescription.dart';
 import 'features/presentation/pages/doctor_schedule.dart';
 import 'features/presentation/pages/ip_admission.dart';
-import 'features/presentation/pages/lab/lab_accounts.dart';
-import 'features/presentation/pages/lab/lab_testqueue.dart';
-import 'features/presentation/pages/lab/dashboard.dart';
 import 'features/presentation/pages/op_ticket.dart';
 import 'firebase_options.dart'; // Import firebase config options
 
@@ -57,8 +57,9 @@ class MyApp extends StatelessWidget {
           '/receptionHome': (context) => ReceptionDashboard(),
         },
         initialRoute: '/',  // Define the initial route
-        //home: SplashScreen(),  // Starting screen is the splash screen
-        home: LabDashboard(),
+      home: RxPrescription(),  // Starting screen is the splash screen
+
+     //  home: PdfPage(),
       ),
     );
   }

@@ -12,3 +12,4 @@ class FormSubmitFailure extends PatientFormState {
 
   FormSubmitFailure(this.error);
 }
+class FormSubmitDuplicate extends PatientFormState {}

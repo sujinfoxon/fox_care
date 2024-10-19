@@ -17,8 +17,8 @@ class SubmitForm extends PatientEvent {
   final String phone2;
   final String sex;
   final String bloodGroup;
-
-  SubmitForm({
+  final String opNumber;
+  SubmitForm( {required this.opNumber,
     required this.firstname,
     required this.lastname,
     required this.middlename,

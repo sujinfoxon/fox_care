@@ -12,11 +12,15 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: 50,
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.secondary,
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.all(0), // Keep padding minimal
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // Set borderRadius to 12
+          ),
         ),
         onPressed: onPressed,
         child: Text(
@@ -50,7 +54,7 @@ class CustomTextField extends StatelessWidget {
         isDense: true,
         // Reduces the overall height of the TextField
         contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-        hintText: hintText,
+        labelText: hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
@@ -151,7 +155,7 @@ Widget customDropdown(
 
       border: Border.all(color: Colors.lightBlue, width: 2),
       // Blue border
-      borderRadius: BorderRadius.circular(15), // Rounded corners
+      borderRadius: BorderRadius.circular(12), // Rounded corners
 
     ),
     child: DropdownButtonFormField<String>(
@@ -170,14 +174,14 @@ Widget customDropdown(
         return DropdownMenuItem<String>(
 
           value: item,
-          child: Text(item),
+          child: Text(item,style: TextStyle(color: Colors.black),),
         );
       }).toList(),
       dropdownColor: Colors.white,
       borderRadius: BorderRadius.circular(5),
-      padding: EdgeInsets.only(top: 4),
+      padding: EdgeInsets.only(top: 10),
       style: TextStyle(
-          fontSize: 12), // Optional: to make the dropdown menu color white
+          fontSize: 16), // Optional: to make the dropdown menu color white
     ),
   );
 }
