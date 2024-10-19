@@ -1,10 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foxcare_app/bloc/patient/patient_bloc.dart';
 import 'package:foxcare_app/bloc/patient/patient_event.dart';
 import 'package:foxcare_app/bloc/patient/patient_state.dart';
 import 'package:foxcare_app/features/presentation/pages/ip_admission.dart';
+import 'package:foxcare_app/features/presentation/receeption/op_ticket_generate.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 import '../widgets/custom_elements.dart';
 import 'admission_status.dart';
@@ -34,8 +39,24 @@ class _PatientRegistrationState extends State<PatientRegistration> {
   final TextEditingController phone1 = TextEditingController();
   final TextEditingController phone2 = TextEditingController();
 
+  final Uuid uuid = Uuid(); // Create an instance of Uuid
 
+  // Function to generate a unique ID
+  String generateNumericUid() {
+    var random = Random();
+    // Generate a 6-digit random number and concatenate it with "Fox"
+    return 'Fox' +
+        List.generate(6, (_) => random.nextInt(10).toString()).join();
+  }
 
+  String uid = '';
+
+  @override
+  void initState() {
+    // Call the method to generate the UID and assign it to 'uid'
+    uid = generateNumericUid();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,18 +212,6 @@ class _PatientRegistrationState extends State<PatientRegistration> {
           children: [
             Text('Patient Information :',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            Row(
-              children: [
-                Text('OP Number : ',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                SizedBox(
-                    width: 200.0,
-                    child: CustomTextField(
-                      hintText: 'Enter OP Number',
-                    )),
-              ],
-            ),
           ],
         ),
         SizedBox(height: 60),
@@ -344,36 +353,84 @@ class _PatientRegistrationState extends State<PatientRegistration> {
         Center(
           child: SizedBox(
             width: 400,
-            child: BlocBuilder<PatientFormBloc, PatientFormState>(
-              builder: (context, currentState) { // Renamed to currentState
+            child: BlocConsumer<PatientFormBloc, PatientFormState>(
+              listener: (context, state) {
+                if (state is FormSubmitFailure) {
+                  // Show failure SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.error), // Display the error message
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                } else if (state is FormSubmitDuplicate) {
+                  // Show duplicate entry SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content:
+                          Text('Patient with the same data already exists.'),
+                      backgroundColor: Colors.orange,
+                    ),
+                  );
+                } else if (state is FormSubmitSuccess) {
+                  // Show success SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Patient registered successfully!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PdfPage(
+                              lastName: lastname.text,
+                              firstName: firstname.text,
+                              address: address1.text,
+                              age: age.text,
+                              phone: phone1.text,
+                              opNumber: uid,
+                            )),
+                    (Route<dynamic> route) =>
+                        false, // This removes all previous routes
+                  );
+                }
+              },
+              builder: (context, currentState) {
                 return currentState is FormSubmitting
-                    ? CircularProgressIndicator()
+                    ? Center(
+                        child: SpinKitPumpingHeart(
+                          color: Colors.blue,
+                          size: 50.0,
+                        ),
+                      )
                     : CustomButton(
-                  label: 'Register',
-                  onPressed: () {
-                    bloc.add(SubmitForm(
-                      firstname: firstname.text,
-                      lastname: lastname.text,
-                      middlename: middlename.text,
-                      dob: dob.text,
-                      age: age.text,
-                      address1: address1.text,
-                      address2: address2.text,
-                      landmark: landmark.text,
-                      city: city.text,
-                      state: state.text, // This is still the state variable in your UI
-                      pincode: pincode.text,
-                      phone1: phone1.text,
-                      phone2: phone2.text,
-                      sex: selectedSex,
-                      bloodGroup: selectedBloodGroup,
-                    ));
-                  },
-                );
+                        label: 'Register',
+                        onPressed: () {
+                          bloc.add(SubmitForm(
+                            firstname: firstname.text,
+                            lastname: lastname.text,
+                            middlename: middlename.text,
+                            dob: dob.text,
+                            age: age.text,
+                            address1: address1.text,
+                            address2: address2.text,
+                            landmark: landmark.text,
+                            city: city.text,
+                            state: state.text,
+                            pincode: pincode.text,
+                            phone1: phone1.text,
+                            phone2: phone2.text,
+                            sex: selectedSex,
+                            bloodGroup: selectedBloodGroup,
+                            opNumber: uid,
+                          ));
+                        },
+                      );
               },
             ),
           ),
-        ),
+        )
       ],
     );
   }
