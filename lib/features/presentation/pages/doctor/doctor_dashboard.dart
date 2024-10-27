@@ -111,11 +111,13 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         ),
         buildDrawerItem(0, 'Home', () {}, Iconsax.mask),
         Divider(height: 5, color: Colors.grey),
-        buildDrawerItem(1, 'Patient Search', () {}, Iconsax.receipt),
+        buildDrawerItem(1, 'Rx List', () {}, Iconsax.receipt),
         Divider(height: 5, color: Colors.grey),
-        buildDrawerItem(2, 'Pharmacy Stocks', () {}, Iconsax.add_circle),
+        buildDrawerItem(2, 'Patient Search', () {}, Iconsax.receipt),
         Divider(height: 5, color: Colors.grey),
-        buildDrawerItem(7, 'Logout', () {
+        buildDrawerItem(3, 'Pharmacy Stocks', () {}, Iconsax.add_circle),
+        Divider(height: 5, color: Colors.grey),
+        buildDrawerItem(4, 'Logout', () {
           // Handle logout action
         }, Iconsax.logout),
       ],

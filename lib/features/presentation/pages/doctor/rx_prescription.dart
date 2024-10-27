@@ -73,11 +73,13 @@ class _RxPrescriptionState extends State<RxPrescription> {
         ),
         buildDrawerItem(0, 'Home', () {}, Iconsax.mask),
         Divider(height: 5, color: Colors.grey),
-        buildDrawerItem(1, 'Patient Search', () {}, Iconsax.receipt),
+        buildDrawerItem(1, 'Rx List', () {}, Iconsax.receipt),
         Divider(height: 5, color: Colors.grey),
-        buildDrawerItem(2, 'Pharmacy Stocks', () {}, Iconsax.add_circle),
+        buildDrawerItem(2, 'Patient Search', () {}, Iconsax.receipt),
         Divider(height: 5, color: Colors.grey),
-        buildDrawerItem(7, 'Logout', () {
+        buildDrawerItem(3, 'Pharmacy Stocks', () {}, Iconsax.add_circle),
+        Divider(height: 5, color: Colors.grey),
+        buildDrawerItem(4, 'Logout', () {
           // Handle logout action
         }, Iconsax.logout),
       ],
@@ -416,13 +418,25 @@ class _RxPrescriptionState extends State<RxPrescription> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                'Prescribed By : Dr Kathiresan ',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w500,
-                ),
+              Row(
+                children: [
+                  Text(
+                    'Prescribed By :  ',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    'Dr Kathiresan ',
+                    style: TextStyle(
+                      color: Colors.lightBlue,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 width: 200,
