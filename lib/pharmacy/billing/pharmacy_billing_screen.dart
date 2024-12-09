@@ -1,43 +1,131 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PharmacyBillingScreen extends StatefulWidget {
-  const PharmacyBillingScreen({super.key});
+class CategoryButton extends StatelessWidget {
+  final String label;
+  final bool isActive;
+  final VoidCallback onPressed;
 
-  @override
-  State<PharmacyBillingScreen> createState() => _PharmacyBillingScreenState();
-}
+  const CategoryButton({
+    required this.label,
+    required this.isActive,
+    required this.onPressed,
+  });
 
-class _PharmacyBillingScreenState extends State<PharmacyBillingScreen> {
   @override
   Widget build(BuildContext context) {
-    double textScale = MediaQuery.of(context).size.width / 800; // Adjust text size based on screen width
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isActive ? Colors.lightBlue[100] : Colors.transparent, // Active tab has background, others are transparent
+          foregroundColor: isActive ? Colors.black : Colors.white, // Adjust text color for visibility
+          elevation: isActive ? 2 : 0, // Add slight elevation for active button
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4), // Set border radius
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(label, style: const TextStyle(fontSize: 19)),
+      ),
+    );
+  }
+}
 
+class CategoryTabs extends StatefulWidget {
+  @override
+  _CategoryTabsState createState() => _CategoryTabsState();
+}
+
+class _CategoryTabsState extends State<CategoryTabs> {
+  int activeIndex = 0; // Tracks the active tab index
+
+  final List<String> categories = [
+    "All Items",
+    "Antibiotics",
+    "Antihistamines",
+    "Antihypertensives",
+    "Analgesics",
+    "Anticonvulsants"
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        categories.length,
+            (index) => CategoryButton(
+          label: categories[index],
+          isActive: index == activeIndex, // Check if this is the active tab
+          onPressed: () {
+            setState(() {
+              activeIndex = index;
+            });
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class PharmacyBillingScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    double textScale = MediaQuery.of(context).size.width / 900; // Adjust text size based on screen width
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        title: const Text('Billing'),
-        leading: const Icon(Icons.arrow_back),
-        actions: const [Icon(Icons.search)],
+        backgroundColor: Color(0xFF5BC0DE),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Icon(Icons.arrow_back, color: Colors.white),
+            Text('Medical Billing'),
+            Container(
+                width: 300,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Container(
+                  height: 30, // Set your desired height
+                  width: 300, // Set your desired width
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Optional: Set background color
+                    borderRadius: BorderRadius.circular(4), // Optional: Set border radius
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search for medicines',
+                      hintStyle: const TextStyle(color: Colors.grey),
+                      prefixIcon: const Icon(Icons.search, color: Color(0xFF5BC0DE)),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                    ),
+                  ),
+                )
+            ),
+          ],
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            color: Colors.lightBlue,
+            color: Color(0xFF5BC0DE),
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: const [
-                  CategoryButton(label: 'All Items'),
-                  CategoryButton(label: 'Antibiotics'),
-                  CategoryButton(label: 'Antihistamines'),
-                  CategoryButton(label: 'Antihypertensives'),
-                  CategoryButton(label: 'Analgesics'),
-                  CategoryButton(label: 'Anticonvulsants'),
-                ],
-              ),
+              child: CategoryTabs(),
             ),
           ),
           Expanded(
@@ -51,7 +139,7 @@ class _PharmacyBillingScreenState extends State<PharmacyBillingScreen> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: MediaQuery.of(context).size.width > 800 ? 3 : 2,
                       crossAxisSpacing: 16.0,
-                      mainAxisSpacing:16.0,
+                      mainAxisSpacing: 16.0,
                       childAspectRatio: MediaQuery.of(context).size.width > 800 ? 0.8 : 0.7,
                     ),
                     itemCount: 6,
@@ -68,7 +156,7 @@ class _PharmacyBillingScreenState extends State<PharmacyBillingScreen> {
                   flex: 4,
                   child: Container(
                     color: Colors.lightBlue[50],
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(24.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -105,18 +193,24 @@ class _PharmacyBillingScreenState extends State<PharmacyBillingScreen> {
                           onChanged: (value) {},
                         ),
                         const SizedBox(height: 8.0),
-                        Text(
-                          'Total Items: 5',
-                          style: TextStyle(fontSize: 14 * textScale),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total Items: 5',
+                              style: TextStyle(fontSize: 14 * textScale),
+                            ),
+                            Text(
+                              'Total Quantity: 5',
+                              style: TextStyle(fontSize: 14 * textScale),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Total Quantity: 5',
-                          style: TextStyle(fontSize: 14 * textScale),
-                        ),
+
                         const Spacer(),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightBlue,
+                            backgroundColor: Color(0xFF5BC0DE),
                             minimumSize: const Size(double.infinity, 50),
                           ),
                           onPressed: () {},
@@ -138,28 +232,6 @@ class _PharmacyBillingScreenState extends State<PharmacyBillingScreen> {
   }
 }
 
-
-class CategoryButton extends StatelessWidget {
-  final String label;
-
-  const CategoryButton({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.lightBlue[100],
-          foregroundColor: Colors.black,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-        ),
-        onPressed: () {},
-        child: Text(label, style: const TextStyle(fontSize: 14)),
-      ),
-    );
-  }
-}
 
 class ProductCard extends StatelessWidget {
   final double textScale;
@@ -192,9 +264,11 @@ class ProductCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  productName,
-                  style: TextStyle(fontSize: 14 * textScale, fontWeight: FontWeight.bold),
+                Center(
+                  child: Text(
+                    productName,
+                    style: TextStyle(fontSize: 14 * textScale, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(height: 4.0),
                 Text(
