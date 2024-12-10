@@ -146,7 +146,7 @@ class PharmacyBillingScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return ProductCard(
                         textScale: textScale,
-                        productName: index == 1 ? 'Parasitamol' : 'Asthma Tablet',
+                        productName: index == 1 ? 'Paracitamol' : 'Asthma Tablet',
                         productPrice: index == 1 ? 'Rs:42' : 'Rs:157',
                       );
                     },
